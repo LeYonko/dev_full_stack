@@ -7,7 +7,7 @@ CORS(app)
 @app.route('/')
 def hello_world():
 	x = 'world'
-	return f"Hello, {x}"
+	return f"Hell, {x}"
 
 if __name__ == "__main__":
     app.run()
