@@ -6,8 +6,8 @@
   </div>
   <br/>
   <br/>
-  <button>
-    <router-link to="/start-new-quiz-page">Démarrer le quiz !</router-link>
+  <button type="button">
+    <router-link to="/NewQuizPage">Démarrer le quiz !</router-link>
   </button>
 
 </template>
