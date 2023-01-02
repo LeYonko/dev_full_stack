@@ -79,11 +79,7 @@ def updateQuestion(question_id, payload, question):
     conn = createConnection()
     cur = conn.cursor()
     try:
-        if (payload["position"] == question.position):
-            cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
-                        (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
-            conn.commit()
-        elif (question.position > payload["position"]):
+        if (question.position > payload["position"]):
             result = cur.execute('SELECT * FROM question WHERE position >= ? AND position <= ?', (payload["position"], question.position)).fetchall()
             #conn.commit()
             for row in result:
@@ -97,6 +93,10 @@ def updateQuestion(question_id, payload, question):
                     conn.commit()
                 else:
                     return 0
+                   #if (payload["position"] == question.position):
+            cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
+                (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
+            conn.commit()
         elif (question.position < payload["position"]):
             result = cur.execute('SELECT * FROM question WHERE position <= ? AND position >= ?', (payload["position"], question.position)).fetchall()
             #conn.commit()
@@ -111,6 +111,10 @@ def updateQuestion(question_id, payload, question):
                     conn.commit()
                 else:
                     return 0
+                   #if (payload["position"] == question.position):
+            cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
+                    (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
+            conn.commit()
         else:
             return 0
     except sqlite3.Error as error:

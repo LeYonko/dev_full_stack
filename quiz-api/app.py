@@ -4,7 +4,7 @@ from flask_cors import CORS
 from Question import Question
 from Participation import Participation
 import database
-from jwt_utils import build_token, decode_token
+from jwt_utils import JwtError, build_token, decode_token
 from datetime import datetime
 
 app = Flask(__name__)
@@ -39,6 +39,12 @@ def PostQuestions():
     if (paramToken == None):
         return 'Unauthorized', 401
     else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
         payload = request.get_json()
         question_decoded = Question(0, payload["title"], payload["position"], payload["text"], payload["image"], payload["possibleAnswers"])
         questionByPosition = database.getQuestion("position", question_decoded.position)
@@ -76,6 +82,12 @@ def updateQuestionById(question_id):
     if (paramToken == None):
         return 'Unauthorized', 401
     else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
         payload = request.get_json()
         question = database.getQuestion("id", question_id)
         if (question == None):
@@ -91,6 +103,12 @@ def deleteQuestion(question_id):
     if (paramToken == None):
         return 'Unauthorized', 401
     else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
         question = database.getQuestion("id", question_id)
         if (question == None):
             return {}, 404
@@ -105,6 +123,12 @@ def deleteAllQuestions():
     if (paramToken == None):
         return 'Unauthorized', 401
     else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
         database.deleteAllQuestions()
         return {}, 204
     
@@ -115,6 +139,12 @@ def deleteAllParticipations():
     if (paramToken == None):
         return 'Unauthorized', 401
     else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
         database.deleteAllParticipations()
         return {}, 204
     
