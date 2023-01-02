@@ -10,6 +10,21 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/rebuild-db', methods=['POST'])
+def generationDB():
+    paramToken = request.headers.get('Authorization')
+    if (paramToken == None):
+        return 'Unauthorized', 401
+    else:
+        try:
+            token = paramToken.replace("Bearer ", "")
+            decode_token(token)
+        except JwtError as error:
+            print('Error occured - ', error)
+            return 'Unauthorized', 401
+        database.generation()
+        return 'Ok', 200
+        #return "Ok", 200
 
 @app.route('/')
 def hello_world():

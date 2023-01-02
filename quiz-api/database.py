@@ -93,13 +93,12 @@ def updateQuestion(question_id, payload, question):
                     conn.commit()
                 else:
                     return 0
-                   #if (payload["position"] == question.position):
             cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
                 (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
             conn.commit()
         elif (question.position < payload["position"]):
             result = cur.execute('SELECT * FROM question WHERE position <= ? AND position >= ?', (payload["position"], question.position)).fetchall()
-            #conn.commit()
+            conn.commit()
             for row in result:
                 if (row[2] == question.position):
                     cur.execute('UPDATE question SET position = ? WHERE id = ?',
@@ -111,7 +110,6 @@ def updateQuestion(question_id, payload, question):
                     conn.commit()
                 else:
                     return 0
-                   #if (payload["position"] == question.position):
             cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
                     (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
             conn.commit()
@@ -176,7 +174,7 @@ def updatePositions(questionByPosition):
     cur = conn.cursor()
     try:
         result = cur.execute('SELECT * FROM question WHERE position >= ?', (questionByPosition.position,)).fetchall()
-        #conn.commit()
+        conn.commit()
         for row in result:
             cur.execute('UPDATE question SET position = ? WHERE id = ?',
                     (row[2]+1, row[0]))
@@ -259,6 +257,7 @@ def getScores():
     cur = conn.cursor()
     try:
         result = cur.execute('SELECT * FROM participation ORDER BY score DESC')
+        conn.commit()
         for row in result:
             participation = Participation(row[0], row[1], row[2], row[3])
             score = {'playerName': participation.playerName, 'score': participation.score, 'date': participation.date}
@@ -272,3 +271,42 @@ def getScores():
             conn.close()
             print('SQLite Connection closed')
     return scores
+
+def generation():
+    conn = createConnection()
+    cur = conn.cursor()
+    try:
+        cur.execute("DROP TABLE IF EXISTS question")
+        cur.execute("DROP TABLE IF EXISTS participation")
+
+        questionTable ='''CREATE TABLE "question" (
+                        "id"	INTEGER NOT NULL,
+                        "title"	TEXT NOT NULL,
+                        "position"	INTEGER NOT NULL,
+                        "text"	TEXT NOT NULL,
+                        "image"	TEXT NOT NULL,
+                        "possibleAnswers"	TEXT NOT NULL,
+                        PRIMARY KEY("id" AUTOINCREMENT)
+                    )'''
+        
+        participationTable ='''CREATE TABLE "participation" (
+                            "id"	INTEGER NOT NULL,
+                            "playerName"	TEXT NOT NULL,
+                            "score"	INTEGER NOT NULL,
+                            "date"	TEXT NOT NULL,
+                            PRIMARY KEY("id" AUTOINCREMENT)
+                        )'''
+
+        cur.execute(questionTable)
+        conn.commit()
+        cur.execute(participationTable)
+        conn.commit()
+    except sqlite3.Error as error:
+        print('Error occured - ', error)
+        return 0
+    finally:
+        if conn:
+            cur.close()
+            conn.close()
+            print('SQLite Connection closed')
+    return 1
