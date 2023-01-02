@@ -115,6 +115,10 @@ def updateQuestion(question_id, payload, question):
             cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
                     (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
             conn.commit()
+        elif (question.position == payload["position"]):
+            cur.execute('UPDATE question SET title = ?, position = ?, text = ?, image = ?, possibleAnswers = ? WHERE id = ?',
+                    (payload["title"], payload["position"], payload["text"], payload["image"], json.dumps(payload["possibleAnswers"], ensure_ascii=False), question_id))
+            conn.commit()
         else:
             return 0
     except sqlite3.Error as error:
