@@ -33,5 +33,6 @@ export default {
   },
   getQuestion(position) {
     // not implemented
+    return this.call("get", "question?position=" +position);
   }
 };

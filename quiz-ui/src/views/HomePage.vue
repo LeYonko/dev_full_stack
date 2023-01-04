@@ -14,7 +14,6 @@
 
 <script>
 import quizApiService from "@/services/QuizApiService";
-
 export default {
   name: "HomePage",
   data() {
@@ -24,10 +23,15 @@ export default {
   },
   async created() {
     console.log("Composant Home page 'created'");
-    var score = await quizApiService.getQuizInfo();
-    this.registeredScores = score.data['score'];
+    try{
+      var score = await quizApiService.getQuizInfo();
+      this.registeredScores = score.data['score'];
+      var value = quizApiService.getQuizInfo();
+    }
+    catch(error){
+      
+    }
     
-    var value = quizApiService.getQuizInfo();
   }
 };
 </script>
