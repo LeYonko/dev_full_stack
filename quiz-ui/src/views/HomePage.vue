@@ -24,14 +24,12 @@ export default {
   async created() {
     console.log("Composant Home page 'created'");
     try{
-      var score = await quizApiService.getQuizInfo();
-      this.registeredScores = score.data['score'];
-      var value = quizApiService.getQuizInfo();
+        var score = await quizApiService.getQuizInfo();
+        console.log(score)
+        this.registeredScores = score.data['scores'];
+    } catch(error){
+        
     }
-    catch(error){
-      
-    }
-    
   }
 };
 </script>

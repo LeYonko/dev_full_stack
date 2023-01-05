@@ -33,6 +33,11 @@ export default {
   },
   getQuestion(position) {
     // not implemented
-    return this.call("get", "question?position=" +position);
+    return this.call("get", "questions?position=" + position);
+  },
+
+  addParticipation(data){
+    return this.call("post", "participations", data);
   }
+
 };

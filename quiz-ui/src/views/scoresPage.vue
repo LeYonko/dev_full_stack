@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import ParticipationStorageService from "@/services/ParticipationStorageService.vue"
+import ParticipationStorageService from "@/services/ParticipationStorageService.js"
 
 export default{
     data(){
