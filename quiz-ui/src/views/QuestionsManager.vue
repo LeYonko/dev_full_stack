@@ -1,5 +1,4 @@
 <template>
-    <h1> Question manager</h1>
     <QuestionDisplayVue :question="currentQuestion" @answer-selected="answerClickedHandler"/>
 </template>
 
@@ -18,8 +17,8 @@ export default {
                 possibleAnswer: [],
             },
             currentQuestionPosition: 1,
-            numberOfQuestions:10,
-            userChoise: []
+            numberOfQuestions:1,
+            userChoise: [],
         }
     },
     components : {
@@ -28,6 +27,14 @@ export default {
     async created() {
         console.log("Composant Question manager 'created'");
         this.loadQuestionByPosition();
+        //
+        try{
+            var score = await quizApiService.getQuizInfo();
+            this.numberOfQuestions = score.data['size'];
+        } catch(error){
+            
+        }
+        //
     },
     methods:{
         async loadQuestionByPosition(){

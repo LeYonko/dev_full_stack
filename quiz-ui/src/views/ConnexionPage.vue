@@ -1,18 +1,18 @@
 <template>
     <div class="newsQuiz ml-2 mt-2">
       <h1>
-          <span class="font-semibold text-xl">Page de démmarage du quiz</span>
+          <span class="font-semibold text-xl">Page de connexion administrateur</span>
       </h1>
       <br>
     </div>
     <div class="block p-5 rounded-lg bg-gradient-to-r from-violet-400 to-fuchsia-400 max-w-sm ml-5">
       <form>
           <p>
-              <label for="username"> Saisissez votre nom : </label>
+              <label for="password"> Saisissez le mot de passe : </label>
               <br>
               <br>
               <div class="form-group mb-6">
-                  <input v-model="username" type="text" class="form-control block
+                  <input vmodel="password" type="text" class="form-control block
                   w-full
                   px-3
                   py-1.5
@@ -21,11 +21,11 @@
                   bg-white bg-clip-padding
                   rounded
                   focus:border-blue-600"
-                  placeholder="Username">
+                  placeholder="Password">
               </div>
           </p>
           <p>
-              <button type="button" @click="launchNewQuiz" class="
+              <button type="button" @clickk="launchNewQuiz" class="
                   w-full
                   px-6
                   py-3
@@ -35,17 +35,16 @@
                   text-xs
                   uppercase
                   rounded
-                  hover:bg-blue-700">C'est parti !
+                  hover:bg-blue-700">Connexion
               </button>
           </p>
       </form>
     </div>
   </template>
   
-  
-  
   <script>
   import participationStorageService from "@/services/ParticipationStorageService";
+  
   export default {
     name: "NewQuizPage",
     data() {

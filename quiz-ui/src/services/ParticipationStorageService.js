@@ -17,6 +17,4 @@ export default {
           // todo : implement
           return window.localStorage.getItem("participationScore");
     },
-    
-
   };
