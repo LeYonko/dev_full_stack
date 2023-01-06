@@ -1,5 +1,5 @@
 <template>
-    <QuestionDisplayVue :question="currentQuestion" @answer-selected="answerClickedHandler"/>
+    <QuestionDisplayVue :question="currentQuestion" :numberOfQuestion="numberOfQuestions" @answer-selected="answerClickedHandler"/>
 </template>
 
 <script>
@@ -15,6 +15,7 @@ export default {
                 questionTitle: "",
                 questionText: "",
                 possibleAnswer: [],
+
             },
             currentQuestionPosition: 1,
             numberOfQuestions:1,
@@ -25,16 +26,14 @@ export default {
         QuestionDisplayVue
     },
     async created() {
-        console.log("Composant Question manager 'created'");
+        //console.log("Composant Question manager 'created'");
         this.loadQuestionByPosition();
-        //
         try{
             var score = await quizApiService.getQuizInfo();
             this.numberOfQuestions = score.data['size'];
         } catch(error){
             
         }
-        //
     },
     methods:{
         async loadQuestionByPosition(){
@@ -54,24 +53,24 @@ export default {
         },
         async answerClickedHandler(position){
             this.userChoise.push(position);
-            this.currentQuestionPosition+=1; //maj de la position de currrent question en l'incrémentant de 1
+            this.currentQuestionPosition+=1;
             await this.loadQuestionByPosition();
-            console.log(this.userChoise); //on affiche la réponse choisi
+            //console.log(this.userChoise); //on affiche la réponse choisi
             if (this.currentQuestionPosition > this.numberOfQuestions){
                 this.endQuiz();
             }
         },
         async endQuiz(){
-            // à implémenter
             var player = ParticipationStorageService.getPlayerName();
             var data = {
                 "playerName": player,
                 "answers": this.userChoise,
-                //ParticipationStorageService.saveParticipationScore(data);
             }
             var result = await quizApiService.addParticipation(data);
-            console.log("score2", result);
+            //console.log("score", result);
             ParticipationStorageService.saveParticipationScore(result.data["score"]);
+            ParticipationStorageService.saveParticipationAnswers(this.userChoise);
+            ParticipationStorageService.saveGoodAnswers(result.data["answersSummaries"]);
             this.$router.push('/scoresPage');
 
         }

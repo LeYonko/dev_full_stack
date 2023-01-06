@@ -56,10 +56,10 @@ export default {
     };
   },
   async created() {
-    console.log("Composant Home page 'created'");
+    //console.log("Composant Home page 'created'");
     try{
         var score = await quizApiService.getQuizInfo();
-        console.log(score)
+        //console.log(score)
         this.registeredScores = score.data['scores'];
     } catch(error){
         

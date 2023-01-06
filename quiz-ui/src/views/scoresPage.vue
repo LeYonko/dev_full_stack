@@ -36,30 +36,89 @@
           Page d'accueil
       </button>
     </div>
+    <br>
+    <div class="ml-2 mt-2">
+        <span class="font-semibold text-xl">Réponses</span>
+    </div>
+    <br>
+    <div v-for="question, idx in this.allQuestions" class="ml-2">
+        Question : {{ question.title}}
+        <br>
+        <div class="text-sm ml-6 mr-6 px-4 py-2 border-2 rounded-lg text-black border-blue-500 bg-gray-50/75">
+            Votre réponse : {{ question.possibleAnswers[this.allAnswers[idx]-1].text }}
+            <br>
+            Bonne réponse : {{ question.possibleAnswers[this.allGoodAnswers[idx]-1].text }}
+        </div>
+        <br>
+    </div>
 </template>
 
 <script>
 import ParticipationStorageService from "@/services/ParticipationStorageService.js"
+import quizApiService from "@/services/QuizApiService";
 
 export default{
     data(){
         return{
             username: " ",
-            score: " "
-
+            score: " ",
+            //
+            allAnswers: [],
+            allQuestions: [],
+            allGoodAnswers: [],
+            currentQuestionPosition: 1,
+            numberOfQuestions:1,
+            //
         };
     },
-    created(){
+    async created(){
         this.username = ParticipationStorageService.getPlayerName();
         this.score = ParticipationStorageService.getParticipationScore();
+        var score = await quizApiService.getQuizInfo();
+        this.numberOfQuestions = score.data['size'];
+        var sizeGoodAnswers = this.listSize(ParticipationStorageService.getGoodAnswers());
+        this.allGoodAnswers = this.transformIntoList(ParticipationStorageService.getGoodAnswers(), sizeGoodAnswers, 4); //good answers
+        var sizeAnswers = this.listSize(ParticipationStorageService.getParticipationAnswers());
+        this.allAnswers = this.transformIntoList(ParticipationStorageService.getParticipationAnswers(), sizeAnswers, 2);
+        this.loadAllQuestions();
     },
     methods:{
         home(){
+            ParticipationStorageService.clear();
             this.$router.push("/");
-        }
+        },
+        listSize(val){
+            var cpt = 0;
+            for (var elem in val){
+                cpt = cpt + 1;
+            }
+            return cpt;
+        },
+        transformIntoList(val, size, step){
+            var list=[]
+            for (var i = 0; i < size; i = i + step){
+                list.push(val[i])
+            }
+            return list
+        },
+        async loadAllQuestions(){
+            try{
+                this.currentQuestionPosition = 1;
+                for(this.currentQuestionPosition; this.currentQuestionPosition <= this.numberOfQuestions; this.currentQuestionPosition++){
+                    var question = await quizApiService.getQuestion(this.currentQuestionPosition);
+                    this.allQuestions.push(question.data);
+                    /*for(var i = 0; i < this.listSize(question.data.possibleAnswers); i++){
+                        console.log(question.data.possibleAnswers[i]);
+                        if (question.data.possibleAnswers[i]["isCorrect"] == true){
+                            this.allGoodAnswers.push(question.data.possibleAnswers[i]["text"]);
+                        }
+                    }*/
+                }
+            }
+            catch(error){
 
+            }
+        },
     }
 }
-
-
 </script>

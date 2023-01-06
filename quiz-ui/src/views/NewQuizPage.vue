@@ -55,7 +55,8 @@
     },
     methods: {
       launchNewQuiz() {
-        console.log("Launch new quiz with", this.username);
+        //console.log("Launch new quiz with", this.username);
+        participationStorageService.clear();
         participationStorageService.savePlayerName(this.username);
         const playerName = participationStorageService.getPlayerName();
         this.$router.push('/questions');
