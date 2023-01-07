@@ -33,10 +33,17 @@ def insertRequest(question):
     conn = createConnection()
     cur = conn.cursor()
     try:
-        cur.execute('INSERT INTO question (title, position, text, image, possibleAnswers) VALUES (?, ?, ?, ?, ?)',
-                        (question.title, question.position, question.text, question.image, json.dumps(question.possibleAnswers, ensure_ascii=False)))
-        id = cur.lastrowid
-        conn.commit()
+        questionByPosition = getQuestion("position", 1);
+        if (questionByPosition == None):
+            cur.execute('INSERT INTO question (title, position, text, image, possibleAnswers) VALUES (?, ?, ?, ?, ?)',
+                            (question.title, 1, question.text, question.image, json.dumps(question.possibleAnswers, ensure_ascii=False)))
+            id = cur.lastrowid
+            conn.commit()
+        else:
+            cur.execute('INSERT INTO question (title, position, text, image, possibleAnswers) VALUES (?, ?, ?, ?, ?)',
+                            (question.title, question.position, question.text, question.image, json.dumps(question.possibleAnswers, ensure_ascii=False)))
+            id = cur.lastrowid
+            conn.commit()
     except sqlite3.Error as error:
         print('Error occured - ', error)
         return 0

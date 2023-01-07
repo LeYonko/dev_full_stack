@@ -1,6 +1,10 @@
 export default {
     clear() {
-        window.localStorage.clear();
+        //window.localStorage.clear();
+        window.localStorage.removeItem("playerName");
+        window.localStorage.removeItem("participationScore");
+        window.localStorage.removeItem("participationAnswers");
+        window.localStorage.removeItem("goodAnswers");
     },
     savePlayerName(playerName) {
           window.localStorage.setItem("playerName", playerName);
@@ -25,5 +29,11 @@ export default {
     },
     getGoodAnswers() {
             return window.localStorage.getItem("goodAnswers");
+    },
+    saveToken(token){
+        window.localStorage.setItem("token", token);
+    },
+    getToken(){
+        return window.localStorage.getItem("token");
     },
   };

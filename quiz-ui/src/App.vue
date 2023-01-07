@@ -22,7 +22,7 @@ import { RouterLink, RouterView } from 'vue-router'
                     <RouterLink to="/aboutUs" class="mt-4 text-white hover:text-amber-200 mr-4">
                     Qui sommes-nous ?
                     </RouterLink>
-                    <RouterLink to="/connexionPage" class="text-sm px-4 py-2 border-2 rounded-lg text-white border-white hover:bg-opacity-40 hover:bg-white">Connexion</RouterLink>
+                    <RouterLink to="/admin" class="text-sm px-4 py-2 border-2 rounded-lg text-white border-white hover:bg-opacity-40 hover:bg-white">Connexion</RouterLink>
                 </div>
             </nav>
         </div>

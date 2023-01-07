@@ -35,9 +35,25 @@ export default {
     // not implemented
     return this.call("get", "questions?position=" + position);
   },
-
+  postLogin(data){
+    return this.call("post", "login", data);
+  },
+  updateQuestion(data, id, token){
+    return this.call("put", "questions/"+id, data, token);
+  },
+  deleteQuestion(id, token){
+    return this.call("delete", "questions/"+id, null, token);
+  },
+  addQuestion(data, token){
+    return this.call("post", "questions", data, token);
+  },
+  deleteAllQuestions(token){
+    return this.call("delete", "questions/all", null, token);
+  },
   addParticipation(data){
     return this.call("post", "participations", data);
+  },
+  deleteAllParticipations(token){
+    return this.call("delete", "participations/all", null, token);
   }
-
 };

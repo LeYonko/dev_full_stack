@@ -62,7 +62,7 @@ export default {
         //console.log(score)
         this.registeredScores = score.data['scores'];
     } catch(error){
-        
+        console.log(error);
     }
   }
 };

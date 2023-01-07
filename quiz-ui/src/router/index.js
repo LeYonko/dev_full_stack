@@ -5,6 +5,13 @@ import NewQuizPage from '../views/NewQuizPage.vue'
 import QuestionsManager from '../views/QuestionsManager.vue'
 import ScoresPage from '../views/ScoresPage.vue'
 import ConnexionPage from '../views/ConnexionPage.vue'
+import Admin from '../views/Admin.vue'
+import AddQuestion from '../views/AddQuestion.vue'
+import AdminInterface from '../views/AdminInterface.vue'
+import DeleteQuestion from '../views/DeleteQuestion.vue'
+import DeleteAllQuestions from '../views/DeleteAllQuestions.vue'
+import DeleteAllParticipations from '../views/DeleteAllParticipations.vue'
+import UpdateQuestion from '../views/UpdateQuestion.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,9 +42,44 @@ const router = createRouter({
       component: QuestionsManager
     },
     {
+        path: "/admin",
+        name: "admin",
+        component: Admin
+    },
+    {
+        path: "/addQuestion",
+        name: "addQuestion",
+        component: AddQuestion
+    },
+    {
       path: "/scoresPage",
       name: "scoresPage",
       component: ScoresPage
+    },
+    {
+        path: "/adminInterface",
+        name: "adminInterface",
+        component: AdminInterface
+    },
+    {
+        path: "/deleteQuestion",
+        name: "deleteQuestion",
+        component: DeleteQuestion
+    },
+    {
+        path: "/deleteAllQuestions",
+        name: "deleteAllQuestions",
+        component: DeleteAllQuestions
+    },
+    {
+        path: "/deleteAllParticipations",
+        name: "deleteAllParticipations",
+        component: DeleteAllParticipations
+    },
+    {
+        path: "/updateQuestion",
+        name: "updateQuestion",
+        component: UpdateQuestion
     }
   ]
 })

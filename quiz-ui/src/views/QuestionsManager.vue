@@ -32,7 +32,7 @@ export default {
             var score = await quizApiService.getQuizInfo();
             this.numberOfQuestions = score.data['size'];
         } catch(error){
-            
+            console.log(error);
         }
     },
     methods:{
@@ -44,11 +44,11 @@ export default {
                     this.currentQuestion=question.data;
                 }
                 catch(error){
-
+                    console.log(error);
                 }
             }
             else{
-
+                this.endQuiz();
             }
         },
         async answerClickedHandler(position){

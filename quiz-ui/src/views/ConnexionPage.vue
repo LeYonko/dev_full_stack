@@ -25,7 +25,7 @@
               </div>
           </p>
           <p>
-              <button type="button" @clickk="launchNewQuiz" class="
+              <button type="button" @click="launchNewQuiz" class="
                   w-full
                   px-6
                   py-3
@@ -54,7 +54,7 @@
     },
     methods: {
       launchNewQuiz() {
-        //console.log("Launch new quiz with", this.username);
+        console.log("Launch new quiz with", this.username);
         participationStorageService.savePlayerName(this.username);
         const playerName = participationStorageService.getPlayerName();
         this.$router.push('/questions');
