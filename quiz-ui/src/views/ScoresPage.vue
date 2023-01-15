@@ -44,10 +44,19 @@
     <div v-for="question, idx in this.allQuestions" class="ml-2">
         Question : {{ question.title}}
         <br>
-        <div class="text-sm ml-6 mr-6 px-4 py-2 border-2 rounded-lg text-black border-blue-500 bg-gray-50/75">
-            Votre réponse : {{ question.possibleAnswers[this.allAnswers[idx]-1].text }}
-            <br>
-            Bonne réponse : {{ question.possibleAnswers[this.allGoodAnswers[idx]-1].text }}
+        <div v-if="this.scoreColor[idx] == '0'">
+            <div class="text-sm ml-6 mr-6 px-4 py-2 border-2 rounded-lg text-black border-blue-500 bg-red-200">
+                Votre réponse : {{ question.possibleAnswers[this.allAnswers[idx]-1].text }}
+                <br>
+                Bonne réponse : {{ question.possibleAnswers[this.allGoodAnswers[idx]-1].text }}
+            </div>
+        </div>
+        <div v-else>
+            <div class="text-sm ml-6 mr-6 px-4 py-2 border-2 rounded-lg text-black border-blue-500 bg-green-200">
+                Votre réponse : {{ question.possibleAnswers[this.allAnswers[idx]-1].text }}
+                <br>
+                Bonne réponse : {{ question.possibleAnswers[this.allGoodAnswers[idx]-1].text }}
+            </div>
         </div>
         <br>
     </div>
@@ -66,6 +75,7 @@ export default{
             allAnswers: [],
             allQuestions: [],
             allGoodAnswers: [],
+            scoreColor: [],
             currentQuestionPosition: 1,
             numberOfQuestions:1,
             //
@@ -77,9 +87,10 @@ export default{
         var score = await quizApiService.getQuizInfo();
         this.numberOfQuestions = score.data['size'];
         var sizeGoodAnswers = this.listSize(ParticipationStorageService.getGoodAnswers());
-        this.allGoodAnswers = this.transformIntoList(ParticipationStorageService.getGoodAnswers(), sizeGoodAnswers, 4); //good answers
+        this.allGoodAnswers = this.transformIntoList(ParticipationStorageService.getGoodAnswers(), sizeGoodAnswers, 0, 4); //good answers
+        this.scoreColor = this.transformIntoList(ParticipationStorageService.getGoodAnswers(), sizeGoodAnswers, 2, 4);
         var sizeAnswers = this.listSize(ParticipationStorageService.getParticipationAnswers());
-        this.allAnswers = this.transformIntoList(ParticipationStorageService.getParticipationAnswers(), sizeAnswers, 2);
+        this.allAnswers = this.transformIntoList(ParticipationStorageService.getParticipationAnswers(), sizeAnswers, 0, 2);
         this.loadAllQuestions();
     },
     methods:{
@@ -94,9 +105,9 @@ export default{
             }
             return cpt;
         },
-        transformIntoList(val, size, step){
+        transformIntoList(val, size, start, step){
             var list=[]
-            for (var i = 0; i < size; i = i + step){
+            for (var i = start; i < size; i = i + step){
                 list.push(val[i])
             }
             return list
@@ -107,12 +118,6 @@ export default{
                 for(this.currentQuestionPosition; this.currentQuestionPosition <= this.numberOfQuestions; this.currentQuestionPosition++){
                     var question = await quizApiService.getQuestion(this.currentQuestionPosition);
                     this.allQuestions.push(question.data);
-                    /*for(var i = 0; i < this.listSize(question.data.possibleAnswers); i++){
-                        console.log(question.data.possibleAnswers[i]);
-                        if (question.data.possibleAnswers[i]["isCorrect"] == true){
-                            this.allGoodAnswers.push(question.data.possibleAnswers[i]["text"]);
-                        }
-                    }*/
                 }
             }
             catch(error){
