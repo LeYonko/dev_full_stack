@@ -48,7 +48,7 @@ export default {
                 }
             }
             else{
-                this.endQuiz();
+                
             }
         },
         async answerClickedHandler(position){
@@ -67,12 +67,10 @@ export default {
                 "answers": this.userChoise,
             }
             var result = await quizApiService.addParticipation(data);
-            //console.log("score", result);
             ParticipationStorageService.saveParticipationScore(result.data["score"]);
             ParticipationStorageService.saveParticipationAnswers(this.userChoise);
             ParticipationStorageService.saveGoodAnswers(result.data["answersSummaries"]);
             this.$router.push('/scoresPage');
-
         }
     }
 }

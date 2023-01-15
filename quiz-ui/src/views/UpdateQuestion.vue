@@ -1,7 +1,7 @@
 <template>
     <div class="ml-2">
         <div class="addQuestion mt-2">
-            <span class="font-semibold text-xl">Ajout d'une question</span>
+            <span class="font-semibold text-xl">Modification d'une question</span>
         </div>
         <br>
         <form>
